@@ -1,0 +1,92 @@
+[
+  {
+    "id": "spring-1",
+    "question": "What is Spring Boot mainly used for?",
+    "options": [
+      "Creating desktop applications",
+      "Building production-ready Spring applications quickly with auto-configuration",
+      "Replacing Java language",
+      "Writing SQL queries automatically"
+    ],
+    "answerIndex": 1,
+    "explanation": "Spring Boot simplifies Spring development with starters, auto-configuration, and embedded servers."
+  },
+  {
+    "id": "spring-2",
+    "question": "What is the default embedded server in Spring Boot?",
+    "options": ["Jetty", "Netty", "Tomcat", "WebLogic"],
+    "answerIndex": 2,
+    "explanation": "Spring Boot uses embedded Tomcat by default (can be replaced with Jetty/Undertow)."
+  },
+  {
+    "id": "spring-3",
+    "question": "Which annotation is used to define a REST Controller in Spring Boot?",
+    "options": ["@Controller", "@Service", "@RestController", "@Repository"],
+    "answerIndex": 2,
+    "explanation": "@RestController = @Controller + @ResponseBody, used for REST APIs."
+  },
+  {
+    "id": "spring-4",
+    "question": "Which annotation is used for dependency injection in Spring?",
+    "options": ["@ComponentScan", "@Autowired", "@RequestMapping", "@SpringBootApplication"],
+    "answerIndex": 1,
+    "explanation": "@Autowired is used to inject dependencies (constructor injection is recommended)."
+  },
+  {
+    "id": "spring-5",
+    "question": "What does @SpringBootApplication combine?",
+    "options": [
+      "@Configuration + @EnableAutoConfiguration + @ComponentScan",
+      "@Service + @Repository + @Controller",
+      "@Bean + @Autowired + @Qualifier",
+      "@RestController + @RequestMapping + @ResponseBody"
+    ],
+    "answerIndex": 0,
+    "explanation": "@SpringBootApplication is a shortcut for configuration + component scanning + auto-configuration."
+  },
+  {
+    "id": "spring-6",
+    "question": "Which layer should contain business logic in a Spring Boot application?",
+    "options": ["Controller layer", "Service layer", "Repository layer", "Entity layer"],
+    "answerIndex": 1,
+    "explanation": "Business logic belongs in Service layer; controllers should delegate."
+  },
+  {
+    "id": "spring-7",
+    "question": "Which Spring annotation maps HTTP GET requests?",
+    "options": ["@PostMapping", "@PutMapping", "@GetMapping", "@DeleteMapping"],
+    "answerIndex": 2,
+    "explanation": "@GetMapping is a specialized annotation for HTTP GET."
+  },
+  {
+    "id": "spring-8",
+    "question": "What is Spring Data JPA used for?",
+    "options": [
+      "To automatically generate UI screens",
+      "To simplify database access by providing repository abstraction",
+      "To create REST controllers automatically only",
+      "To run Spring Boot without Maven"
+    ],
+    "answerIndex": 1,
+    "explanation": "Spring Data JPA provides repository interfaces to reduce boilerplate DAO code."
+  },
+  {
+    "id": "spring-9",
+    "question": "Which annotation is used to handle exceptions globally in Spring Boot REST APIs?",
+    "options": ["@ControllerAdvice", "@ExceptionMapper", "@ErrorHandler", "@RestException"],
+    "answerIndex": 0,
+    "explanation": "@ControllerAdvice + @ExceptionHandler is used for global exception handling."
+  },
+  {
+    "id": "spring-10",
+    "question": "What is the purpose of @Transactional?",
+    "options": [
+      "To enable caching",
+      "To define a REST endpoint",
+      "To manage database transactions automatically",
+      "To enable async processing"
+    ],
+    "answerIndex": 2,
+    "explanation": "@Transactional ensures commit/rollback behavior and maintains transaction boundaries."
+  }
+]

@@ -1,0 +1,107 @@
+[
+  {
+    "id": "react-1",
+    "question": "What is the purpose of React's virtual DOM?",
+    "options": [
+      "To directly manipulate the browser DOM for faster updates",
+      "To efficiently compute UI changes and update only necessary parts of the real DOM",
+      "To replace the need for HTML and CSS",
+      "To store user data permanently"
+    ],
+    "answerIndex": 1,
+    "explanation": "Virtual DOM helps React optimize rendering by diffing changes and updating only required nodes in the real DOM."
+  },
+  {
+    "id": "react-2",
+    "question": "Which hook is used to perform side-effects in functional components?",
+    "options": ["useState", "useMemo", "useEffect", "useCallback"],
+    "answerIndex": 2,
+    "explanation": "useEffect runs after render and is used for side-effects like API calls, subscriptions, and DOM updates."
+  },
+  {
+    "id": "react-3",
+    "question": "What does useMemo do?",
+    "options": [
+      "Memoizes a function definition",
+      "Memoizes a computed value to avoid recalculation",
+      "Triggers re-render automatically",
+      "Stores component state"
+    ],
+    "answerIndex": 1,
+    "explanation": "useMemo caches the result of a computation and re-computes only when dependencies change."
+  },
+  {
+    "id": "react-4",
+    "question": "What is the correct way to pass data from parent to child component?",
+    "options": ["Using props", "Using useState in child", "Using context only", "Using refs"],
+    "answerIndex": 0,
+    "explanation": "Props are used to pass data from parent to child components."
+  },
+  {
+    "id": "react-5",
+    "question": "Which statement is true about React keys in lists?",
+    "options": [
+      "Keys must be globally unique for the entire app",
+      "Keys are used to track elements for efficient updates",
+      "Keys are only needed when list has more than 10 items",
+      "Keys improve CSS styling"
+    ],
+    "answerIndex": 1,
+    "explanation": "Keys help React identify which elements changed, are added, or removed to optimize rendering."
+  },
+  {
+    "id": "react-6",
+    "question": "What happens when state updates using setState/useState setter?",
+    "options": [
+      "State changes immediately and UI updates instantly",
+      "React schedules re-render and updates UI based on new state",
+      "Component unmounts and mounts again",
+      "Only state changes without UI re-render"
+    ],
+    "answerIndex": 1,
+    "explanation": "React batches state updates and schedules a re-render for performance optimization."
+  },
+  {
+    "id": "react-7",
+    "question": "Which hook is best for memoizing callback functions?",
+    "options": ["useMemo", "useCallback", "useRef", "useEffect"],
+    "answerIndex": 1,
+    "explanation": "useCallback memoizes a function definition so it doesn't get recreated on every render unless dependencies change."
+  },
+  {
+    "id": "react-8",
+    "question": "What is React Context mainly used for?",
+    "options": [
+      "Handling API calls",
+      "Managing DOM events",
+      "Sharing state globally without prop drilling",
+      "Creating custom hooks"
+    ],
+    "answerIndex": 2,
+    "explanation": "Context provides a way to share values between components without passing props down manually at every level."
+  },
+  {
+    "id": "react-9",
+    "question": "What is a controlled component in React?",
+    "options": [
+      "A component that cannot be re-rendered",
+      "A form element whose value is controlled by React state",
+      "A component controlled only by parent props",
+      "A component that uses useRef"
+    ],
+    "answerIndex": 1,
+    "explanation": "Controlled components bind input value to state and update state on change."
+  },
+  {
+    "id": "react-10",
+    "question": "React component re-renders when:",
+    "options": [
+      "State changes",
+      "Props change",
+      "Parent component re-renders",
+      "All of the above"
+    ],
+    "answerIndex": 3,
+    "explanation": "Any change in state/props or parent render can trigger a re-render depending on memoization."
+  }
+]

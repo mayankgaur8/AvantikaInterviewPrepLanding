@@ -1,0 +1,16 @@
+[
+  {
+    "id": "java-1",
+    "question": "What is the time complexity of HashMap get() average case?",
+    "options": ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+    "answerIndex": 0,
+    "explanation": "HashMap get() is O(1) on average due to hashing, but can degrade with collisions."
+  },
+  {
+    "id": "java-2",
+    "question": "Which feature was introduced in Java 8?",
+    "options": ["Modules", "Records", "Lambda expressions", "Text blocks"],
+    "answerIndex": 2,
+    "explanation": "Lambda expressions and Stream API were introduced in Java 8."
+  }
+]
