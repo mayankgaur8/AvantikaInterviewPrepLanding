@@ -564,7 +564,7 @@ export default function Home() {
                 placeholder="Enter email for free roadmap"
                 className="bg-transparent text-white placeholder:text-white/50 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
               />
-              <Button onClick={handleFreePlan} className="rounded-xl bg-white text-purple-800 hover:bg-white/95 px-5 py-2 font-semibold shadow-lg">
+              <Button onClick={handleFreePlan} className="rounded-xl bg-black text-white hover:bg-black/90 px-5 py-2 font-semibold shadow-lg">
                 Get Free Plan <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -971,7 +971,7 @@ export default function Home() {
 
           <div className="flex gap-2">
             <Button
-              variant="ghost"
+              variant="default"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className="bg-black text-white hover:bg-black/90 hover:text-white"
             >
@@ -979,9 +979,9 @@ export default function Home() {
             </Button>
 
             <Button
-              variant="outline"
+              variant="default"
               onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
-              className="bg-black text-white border-black hover:bg-black/90 hover:text-white"
+              className="bg-black text-white hover:bg-black/90 hover:text-white"
             >
               Pricing
             </Button>
