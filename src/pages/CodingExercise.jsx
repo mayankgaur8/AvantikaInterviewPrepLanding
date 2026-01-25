@@ -168,7 +168,16 @@ export default function CodingExercise() {
     iframe.onload = () => { try { URL.revokeObjectURL(url); } catch (e) {} };
   }
 
-  function runCode() { runRunner(false); }
+  function runCode() { 
+    // If current question provides tests, run them so users see outputs/results.
+    const q = questions[qIndex] || {};
+    if (q.tests && Array.isArray(q.tests) && q.tests.length) {
+      runRunner(true, q.tests);
+    } else {
+      runRunner(false);
+    }
+  }
+
   function runTests() {
     const q = questions[qIndex] || {};
     runRunner(true, q.tests || []);
@@ -263,7 +272,7 @@ export default function CodingExercise() {
             </div>
 
             {/* Center: Question content */}
-            <div>
+            <div style={{ boxSizing: 'border-box', maxWidth: '100%', minWidth: 0 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h1 style={{ fontSize: 28, margin: 0 }}>{qIndex + 1}. {(questions[qIndex] && questions[qIndex].title) || 'Select a question'}</h1>
                 <div>
@@ -286,13 +295,13 @@ export default function CodingExercise() {
               </div>
 
               <div style={{ marginTop: 14, color: '#374151', lineHeight: 1.7 }}>
-                <div style={{ marginBottom: 12 }}>{renderInlineCode((questions[qIndex] && questions[qIndex].statement) || 'Select a question to see the statement.')}</div>
+                <div style={{ marginBottom: 12, overflowWrap: 'break-word', wordBreak: 'break-word' }}>{renderInlineCode((questions[qIndex] && questions[qIndex].statement) || 'Select a question to see the statement.')}</div>
 
                 {/* If selected question is JavaScript show the editor */}
                 {questions[qIndex] && questions[qIndex].language === 'javascript' && (
                   <div style={{ marginTop: 12 }}>
                     <div style={{ fontWeight: 700, marginBottom: 8 }}>Code editor</div>
-                    <textarea value={code} onChange={(e) => setCode(e.target.value)} style={{ width: '100%', minHeight: 240, fontFamily: 'monospace', fontSize: 13, padding: 12, borderRadius: 8 }} />
+                    <textarea value={code} onChange={(e) => setCode(e.target.value)} style={{ width: '100%', maxWidth: '100%', boxSizing: 'border-box', minHeight: 240, fontFamily: 'monospace', fontSize: 13, padding: 12, borderRadius: 8, whiteSpace: 'pre-wrap', overflowWrap: 'break-word', wordBreak: 'break-word' }} />
                   </div>
                 )}
 
@@ -300,7 +309,7 @@ export default function CodingExercise() {
                 {showSolution && (
                   <div style={{ marginTop: 18 }}>
                     <div style={{ fontWeight: 700, marginBottom: 8 }}>Solution ({(questions[qIndex] && questions[qIndex].language) || 'unknown'})</div>
-                    <pre style={{ background: '#0b1220', color: '#dbeafe', padding: 20, borderRadius: 12, overflowX: 'auto', fontSize: 14, whiteSpace: 'pre-wrap' }}>
+                    <pre style={{ background: '#0b1220', color: '#dbeafe', padding: 20, borderRadius: 12, overflowX: 'auto', fontSize: 14, whiteSpace: 'pre-wrap', wordBreak: 'break-word', maxWidth: '100%', boxSizing: 'border-box' }}>
                       {(questions[qIndex] && questions[qIndex].solution) || 'No solution available.'}
                     </pre>
                   </div>

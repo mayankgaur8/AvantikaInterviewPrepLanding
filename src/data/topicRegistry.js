@@ -47,6 +47,7 @@ export const TOPIC_QUESTIONS = {
     system_design: SYSTEM_DESIGN_QUESTIONS,
     devops: DEVOPS_QUESTIONS,
     cicd: CICD_QUESTIONS,
+    ci_cd: CICD_QUESTIONS,
     python: PYTHON_QUESTIONS,
     django: DJANGO_QUESTIONS,
     

@@ -479,60 +479,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-brand-gradient text-white">
-      {/* Top bar */}
-      <div className="sticky top-0 z-40 border-b border-neutral-200/60 bg-white/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2">
-            <div className="h-10 w-10">
-              <img
-                src={AvantikaLogo}
-                alt="Avantika Interviews Logo"
-                className="h-full w-full rounded-full object-contain"
-              />
-            </div>
-            <div className="leading-tight">
-              <div className="text-sm font-semibold">AvantikaInterviewPrep</div>
-              <div className="text-xs text-neutral-500">Prep smarter. Interview faster.</div>
-            </div>
-          </div>
-
-          <div className="hidden items-center gap-2 md:flex">
-            <Button variant="ghost" onClick={() => document.getElementById("demo")?.scrollIntoView({ behavior: "smooth" })} className="bg-indigo-600/95 text-white hover:bg-indigo-500 focus:ring-indigo-300 shadow-md">
-              Live Demo <ChevronRight className="ml-1 h-4 w-4" />
-            </Button>
-
-            <Button variant="outline" onClick={() => document.getElementById("roadmap")?.scrollIntoView({ behavior: "smooth" })} className="bg-emerald-500 text-white hover:bg-emerald-400 focus:ring-emerald-300 shadow-sm">
-              Roadmap
-            </Button>
-
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>
-                  Get Interview Plan <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Get your personalized plan</DialogTitle>
-                </DialogHeader>
-                <p className="text-sm text-neutral-600">
-                  Enter your email — we’ll send a 30-day plan + role roadmap.
-                </p>
-                <div className="flex gap-2">
-                  <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
-                  <Button onClick={handleFreePlan}>Send</Button>
-                </div>
-                {submitted && (
-                  <div className="flex items-center gap-2 rounded-xl border border-neutral-200 bg-neutral-50 p-3 text-sm text-neutral-800">
-                    <CheckCircle2 className="h-4 w-4" />
-                    Sent! (Demo) You can wire this to your backend later.
-                  </div>
-                )}
-              </DialogContent>
-            </Dialog>
-          </div>
-        </div>
-      </div>
+      {/* Header removed (SiteFrame provides a shared header) */}
 
       {/* Hero */}
       <div className="mx-auto w-full max-w-6xl px-4 pt-12">
@@ -964,30 +911,7 @@ export default function Home() {
         </Card>
       </Section>
 
-      {/* Footer */}
-      <footer className="border-t border-neutral-200/60 bg-white">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 md:flex-row md:items-center md:justify-between">
-          <div className="text-sm text-neutral-600">© {new Date().getFullYear()} AvantikaInterviewPrep</div>
-
-          <div className="flex gap-2">
-            <Button
-              variant="default"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="bg-black text-white hover:bg-black/90 hover:text-white"
-            >
-              Back to top
-            </Button>
-
-            <Button
-              variant="default"
-              onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
-              className="bg-black text-white hover:bg-black/90 hover:text-white"
-            >
-              Pricing
-            </Button>
-          </div>
-        </div>
-      </footer>
+      {/* Footer moved to SiteFrame — duplicate footer removed from this page */}
     </div>
   );
 }

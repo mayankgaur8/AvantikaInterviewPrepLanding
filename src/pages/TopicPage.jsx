@@ -83,6 +83,7 @@ export default function TopicPage() {
   const [level, setLevel] = useState("All"); // All | Basic | Intermediate | Advanced
   const [index, setIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [showAnswers, setShowAnswers] = useState(false); // new: toggle to show all answers
 
   // --- list states ---
   const [search, setSearch] = useState("");
@@ -218,15 +219,21 @@ export default function TopicPage() {
 
           <div className="ml-auto flex items-center gap-2">
             <Badge className="bg-white/10 text-white border border-white/15">{progressText}</Badge>
+            <Button
+              onClick={() => setShowAnswers((s) => !s)}
+              className={`rounded-xl px-4 py-2 font-semibold transition-all duration-150 ${showAnswers ? 'bg-white text-purple-700' : 'bg-white/5 text-white border border-white/20'}`}
+            >
+              {showAnswers ? 'Hide Answers' : 'Show Answers'}
+            </Button>
           </div>
         </div>
 
         {/* ===== Interactive 1-by-1 Card ===== */}
-        <Card className="mt-6 bg-white/10 text-white border border-white/15 backdrop-blur rounded-3xl overflow-hidden">
+        <Card className="mt-6 bg-white text-neutral-900 border border-neutral-200 rounded-3xl overflow-hidden">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>Interactive Practice</span>
-              <span className="text-sm text-white/80">
+              <span className="text-sm text-neutral-500">
                 {filtered.length ? `${current?.level || ""}` : "No questions"}
               </span>
             </CardTitle>
@@ -239,93 +246,80 @@ export default function TopicPage() {
                 </div>
               </div>
             ) : (
-              <div className="rounded-2xl bg-white/10 border border-white/15 p-5">
-                <div className="text-lg font-semibold">{current.q}</div>
+              <div className="rounded-2xl bg-white p-6 border border-neutral-200">
+                <div className="text-lg font-semibold text-neutral-900">{current.q}</div>
 
                 {!showAnswer ? (
                   <div className="mt-4">
                     <Button
                       onClick={onShowAnswer}
                       className="rounded-xl px-4 py-2 font-semibold shadow-md transition-all"
-                      // purple gradient primary CTA so it stands out on the background
                       style={{ background: 'linear-gradient(90deg,#7c3aed,#4f46e5)', color: '#fff' }}
                     >
                       Show Answer
                     </Button>
                   </div>
                 ) : (
-                  <div className="mt-4 rounded-2xl bg-black/30 border border-white/15 p-4">
-                    <div className="text-sm font-semibold">Answer</div>
-                   {showAnswer && (
-  <div className="mt-4 space-y-4 rounded-2xl bg-black/30 border border-white/15 p-4">
-    {/* Summary */}
-    <div>
-      <div className="text-sm font-semibold">Answer</div>
-      <div className="mt-2 text-sm text-white/90 leading-relaxed">
-        {current.answer?.summary ?? current.a}
-      </div>
-    </div>
+                  <div className="mt-4 rounded-2xl bg-gray-50 border border-neutral-200 p-4">
+                    <div className="text-sm font-semibold text-neutral-900">Answer</div>
+                    {showAnswer && (
+                      <div className="mt-4 space-y-4">
+                        <div>
+                          <div className="text-sm font-semibold text-neutral-900">Answer</div>
+                          <div className="mt-2 text-sm text-neutral-800 leading-relaxed">
+                            {current.answer?.summary ?? current.a}
+                          </div>
+                        </div>
 
-    {/* Differences table */}
-    {current.answer?.table && (
-      <div className="space-y-2">
-        <div className="text-sm font-semibold">{current.answer.table.title}</div>
-        <div className="overflow-x-auto rounded-xl border border-white/15">
-          <table className="w-full text-sm">
-            <thead className="bg-white/10">
-              <tr>
-                {current.answer.table.headers.map((h) => (
-                  <th key={h} className="px-3 py-2 text-left font-semibold">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {current.answer.table.rows.map((row, idx) => (
-                <tr key={idx} className="border-t border-white/10">
-                  {row.map((cell, cidx) => (
-                    <td key={cidx} className="px-3 py-2 text-white/90 align-top">
-                      {cell}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    )}
+                        {current.answer?.table && (
+                          <div className="space-y-2">
+                            <div className="text-sm font-semibold text-neutral-900">{current.answer.table.title}</div>
+                            <div className="overflow-x-auto rounded-xl border border-neutral-200">
+                              <table className="w-full text-sm">
+                                <thead className="bg-neutral-100">
+                                  <tr>
+                                    {current.answer.table.headers.map((h) => (
+                                      <th key={h} className="px-3 py-2 text-left font-semibold text-neutral-900">
+                                        {h}
+                                      </th>
+                                    ))}
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {current.answer.table.rows.map((row, idx) => (
+                                    <tr key={idx} className="border-t border-neutral-100">
+                                      {row.map((cell, cidx) => (
+                                        <td key={cidx} className="px-3 py-2 text-neutral-800 align-top">
+                                          {cell}
+                                        </td>
+                                      ))}
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        )}
 
-    {/* Code block */}
-    {current.answer?.code && (
-      <div className="space-y-2">
-        <div className="text-sm font-semibold">{current.answer.codeTitle ?? "Code"}</div>
-        <pre className="overflow-x-auto rounded-xl border border-white/15 bg-black/60 p-4 text-xs leading-relaxed">
-          <code>{current.answer.code}</code>
-        </pre>
-      </div>
-    )}
-  </div>
-)}
-
+                        {current.answer?.code && (
+                          <div className="space-y-2">
+                            <div className="text-sm font-semibold text-neutral-900">{current.answer.codeTitle ?? "Code"}</div>
+                            <pre className="overflow-x-auto rounded-xl border border-neutral-200 bg-neutral-900 p-4 text-xs leading-relaxed text-white">
+                              <code>{current.answer.code}</code>
+                            </pre>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
-
+               
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Button onClick={onPrev} className="bg-black text-white hover:bg-black/90 rounded-xl">
                     Prev
                   </Button>
 
-                  <Button
-                    onClick={onNext}
-                    disabled={!showAnswer}
-                    className={`rounded-xl ${
-                      showAnswer
-                        ? "bg-white text-purple-700 hover:bg-white/95"
-                        : "bg-white/20 text-white/60 cursor-not-allowed"
-                    }`}
-                  >
+                  <Button onClick={onNext} className="bg-black text-white hover:bg-black/90 rounded-xl">
                     Next Question
                   </Button>
 
@@ -339,12 +333,6 @@ export default function TopicPage() {
                     Restart
                   </Button>
                 </div>
-
-                {!showAnswer && (
-                  <div className="mt-2 text-xs text-white/70">
-                    Tip: Show answer to unlock “Next Question”.
-                  </div>
-                )}
               </div>
             )}
           </CardContent>
@@ -388,6 +376,15 @@ export default function TopicPage() {
               <div className="rounded-xl border bg-white p-4 text-sm text-neutral-700">
                 No questions found in <b>qaBank</b> for this topic/level. Add data in
                 <b> questionBank.js</b>.
+              </div>
+            ) : showAnswers ? (
+              <div className="space-y-4">
+                {list.map((item, idx) => (
+                  <div key={item.id || idx} className="rounded-xl border bg-neutral-50 p-4 text-sm text-neutral-800">
+                    <div className="font-semibold mb-2">Q: {item.q}</div>
+                    <div>A: {item.a}</div>
+                  </div>
+                ))}
               </div>
             ) : (
               <Accordion type="single" collapsible className="w-full">

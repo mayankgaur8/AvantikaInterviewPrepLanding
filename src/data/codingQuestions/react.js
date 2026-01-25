@@ -1,18 +1,104 @@
-const reactQuestions = [];
+const reactQuestions = [
+  { id: 'r-01', title: 'Sum of array', difficulty: 'Easy', language: 'javascript', statement: 'Return the sum of numbers in an array (safe for non-number values).', solution: `function solve(arr){ return (arr||[]).reduce((s,x)=>s+(Number(x)||0),0); }`, tests:[{ input: [[1,2,3]], expected: 6 },{ input: [[-1,1,2]], expected: 2 },{ input: [['a',2]], expected: 2 }] },
 
-// Create 50 JavaScript algorithmic questions usable in the in-browser runner
-for (let i = 1; i <= 50; i++) {
-  const id = `r-${String(i).padStart(2, '0')}`;
-  const title = `Sum of array - variant ${i}`;
-  const difficulty = i <= 15 ? 'Easy' : (i <= 35 ? 'Medium' : 'Hard');
-  const statement = `Given an array of numbers return the sum of its elements (variant ${i}).`;
-  const solution = `function solve(arr) { return (arr||[]).reduce((s,x)=>s+(Number(x)||0),0); }`;
-  const tests = [
-    { input: [[1,2,3]], expected: 6 },
-    { input: [[-1,1,2]], expected: 2 },
-    { input: [[]], expected: 0 }
-  ];
-  reactQuestions.push({ id, title, difficulty, language: 'javascript', statement, solution, tests });
-}
+  { id: 'r-02', title: 'Unique by key', difficulty: 'Easy', language: 'javascript', statement: 'Given an array of objects and a key, return an array with unique objects (first occurrence) by that key.', solution: `function solve(arr,key){ if(!Array.isArray(arr)) return []; const seen=new Set(); const out=[]; for(const o of arr){ const v=o && o[key]; if(!seen.has(v)){ seen.add(v); out.push(o); } } return out; }`, tests:[{ input: [[{id:1},{id:2},{id:1}], 'id'], expected: [{id:1},{id:2}] },{ input: [[{k:'a'},{k:'b'},{k:'a'}],'k'], expected:[{k:'a'},{k:'b'}] }] },
+
+  { id: 'r-03', title: 'Chunk array', difficulty: 'Easy', language: 'javascript', statement: 'Split an array into chunks of given size. Last chunk may be smaller.', solution: `function solve(arr,n){ if(!Array.isArray(arr)||n<=0) return []; const r=[]; for(let i=0;i<arr.length;i+=n) r.push(arr.slice(i,i+n)); return r; }`, tests:[{ input: [[1,2,3,4,5],2], expected:[[1,2],[3,4],[5]] },{ input:[[1,2,3],5], expected:[[1,2,3]] }] },
+
+  { id: 'r-04', title: 'Flatten props', difficulty: 'Medium', language: 'javascript', statement: 'Flatten nested arrays of props to a single-level array. Accepts arrays or values.', solution: `function solve(x){ const out=[]; (function f(v){ if(Array.isArray(v)) for(const it of v) f(it); else out.push(v); })(x); return out; }`, tests:[{ input: [[1,[2,[3]],4]], expected:[1,2,3,4] },{ input:[[[]]], expected:[] }] },
+
+  { id: 'r-05', title: 'Shallow equal', difficulty: 'Medium', language: 'javascript', statement: 'Return true if two objects are shallow-equal (same keys and === values).', solution: `function solve(a,b){ if(a===b) return true; if(!a||!b) return false; const ka=Object.keys(a), kb=Object.keys(b); if(ka.length!==kb.length) return false; for(const k of ka) if(!(k in b) || a[k]!==b[k]) return false; return true; }`, tests:[{ input:[{a:1,b:2},{a:1,b:2}], expected:true },{ input:[{a:1},{a:'1'}], expected:false }] },
+
+  { id: 'r-06', title: 'Deep clone (simple)', difficulty: 'Medium', language: 'javascript', statement: 'Deep clone an object/array (handles plain objects, arrays, primitives).', solution: `function solve(x){ if(x===null||typeof x!=='object') return x; if(Array.isArray(x)) return x.map(solve); const o={}; for(const k in x) if(Object.prototype.hasOwnProperty.call(x,k)) o[k]=solve(x[k]); return o; }`, tests:[{ input:[{a:1,b:{c:2}}], expected:{a:1,b:{c:2}} },{ input:[[1,[2,3]]], expected:[1,[2,3]] }] },
+
+  { id: 'r-07', title: 'Pick keys', difficulty: 'Easy', language: 'javascript', statement: 'Return a new object containing only the specified keys.', solution: `function solve(obj,keys){ const o={}; for(const k of (keys||[])) if(k in obj) o[k]=obj[k]; return o; }`, tests:[{ input:[{a:1,b:2},['b']], expected:{b:2} },{ input:[{x:1},['y']], expected:{} }] },
+
+  { id: 'r-08', title: 'Omit keys', difficulty: 'Easy', language: 'javascript', statement: 'Return a new object without the specified keys.', solution: `function solve(obj,keys){ const s=new Set(keys||[]); const o={}; for(const k in obj) if(!s.has(k)) o[k]=obj[k]; return o; }`, tests:[{ input:[{a:1,b:2},['a']], expected:{b:2} }] },
+
+  { id: 'r-09', title: 'Query string to object', difficulty: 'Easy', language: 'javascript', statement: 'Parse a URL query string into an object. Leading ? optional.', solution: `function solve(q){ if(!q) return {}; const s=q[0]==='?'?q.slice(1):q; if(!s) return {}; return s.split('&').reduce((o,p)=>{ const [k,v]=p.split('='); o[decodeURIComponent(k||'')]=decodeURIComponent(v||''); return o; },{}); }`, tests:[{ input:['?a=1&b=two'], expected:{a:'1',b:'two'} },{ input:[''], expected:{} }] },
+
+  { id: 'r-10', title: 'Object to query string', difficulty: 'Easy', language: 'javascript', statement: 'Serialize an object into a query string (keys sorted).', solution: `function solve(obj){ return Object.keys(obj||{}).sort().map(k=>encodeURIComponent(k)+'='+encodeURIComponent(String(obj[k]||''))).join('&'); }`, tests:[{ input:[{b:2,a:1}], expected:'a=1&b=2' }] },
+
+  { id: 'r-11', title: 'Classnames merge', difficulty: 'Easy', language: 'javascript', statement: 'Merge multiple className inputs (strings, arrays, objects) into a space-separated string. Falsy values are ignored.', solution: `function solve(...args){ const out=[]; for(const a of args){ if(!a) continue; if(typeof a==='string') out.push(...a.split(/\s+/).filter(Boolean)); else if(Array.isArray(a)) out.push(...a.flatMap(x=>String(x).split(/\s+/))); else if(typeof a==='object') for(const k in a) if(a[k]) out.push(k); } return Array.from(new Set(out)).join(' '); }`, tests:[{ input:['btn','large'], expected:'btn large' },{ input:[{ active:true, disabled:false }, 'btn'], expected:'active btn' }] },
+
+  { id: 'r-12', title: 'Stable sort by key', difficulty: 'Medium', language: 'javascript', statement: 'Stable sort an array of objects by numeric key ascending.', solution: `function solve(arr,key){ return (arr||[]).map((v,i)=>({v,i})).sort((a,b)=>{ const av=Number(a.v[key]||0), bv=Number(b.v[key]||0); return av===bv? a.i-b.i : av-bv; }).map(x=>x.v); }`, tests:[{ input:[[{id:1,v:2},{id:2,v:1},{id:3,v:2}],'v'], expected:[{id:2,v:1},{id:1,v:2},{id:3,v:2}] }] },
+
+  { id: 'r-13', title: 'Once', difficulty: 'Easy', language: 'javascript', statement: 'Return a function wrapper that only invokes the original once (subsequent calls return the first result).', solution: `function solve(fn){ let called=false,res; return function(...a){ if(!called){ called=true; res=fn.apply(this,a); } return res; }; }`, tests:[{ input:[(function(){ return 5; })], expected:5 }] },
+
+  { id: 'r-14', title: 'Get deep', difficulty: 'Medium', language: 'javascript', statement: 'Get nested property by path (dot notation). Return undefined if missing.', solution: `function solve(obj,path){ if(!path) return undefined; const parts=String(path).split('.'); let cur=obj; for(const p of parts){ if(cur==null) return undefined; cur=cur[p]; } return cur; }`, tests:[{ input:[{a:{b:2}},'a.b'], expected:2 },{ input:[{a:1},'a.b'], expected: undefined }] },
+
+  { id: 'r-15', title: 'Set deep', difficulty: 'Medium', language: 'javascript', statement: 'Set nested property by path (dot notation) immutably and return new object.', solution: `function solve(obj,path,value){ const parts=String(path).split('.'); function set(o,i){ const key=parts[i]; const copy=Array.isArray(o)? o.slice() : Object.assign({},o); if(i===parts.length-1){ copy[key]=value; return copy; } copy[key]= set(o && o[key] ? o[key] : {}, i+1); return copy; } return set(obj||{},0); }`, tests:[{ input:[{a:{b:1}},'a.b',2], expected:{a:{b:2}} }] },
+
+  { id: 'r-16', title: 'Unique by transform', difficulty: 'Medium', language: 'javascript', statement: 'Return unique items from array using a transform function (first occurrence kept).', solution: `function solve(arr,fn){ const seen=new Set(), out=[]; for(const x of arr){ const k=fn? fn(x) : x; if(!seen.has(k)){ seen.add(k); out.push(x);} } return out; }`, tests:[{ input:[[{id:1},{id:2},{id:1}], (x)=>x.id], expected:[{id:1},{id:2}] }] },
+
+  { id: 'r-17', title: 'Difference arrays', difficulty: 'Easy', language: 'javascript', statement: 'Given two arrays A and B, return { added:[in B not in A], removed:[in A not in B] } (by ===).', solution: `function solve(A,B){ A=A||[]; B=B||[]; const sa=new Set(A); const sb=new Set(B); return { added: B.filter(x=>!sa.has(x)), removed: A.filter(x=>!sb.has(x)) }; }`, tests:[{ input:[[1,2,3],[2,3,4]], expected:{ added:[4], removed:[1] } }] },
+
+  { id: 'r-18', title: 'Compose functions', difficulty: 'Easy', language: 'javascript', statement: 'Compose functions left-to-right: compose(f,g)(x) => g(f(x)). Return a function.', solution: `function solve(...fns){ return function(arg){ return fns.reduce((v,f)=>f(v),arg); }; }`, tests:[{ input:[(x=>x+1),(x=>x*2)], expected:4 }] },
+
+  { id: 'r-19', title: 'Stable dedupe (order preserved)', difficulty: 'Easy', language: 'javascript', statement: 'Return array deduped while keeping first occurrence order.', solution: `function solve(arr){ const s=new Set(), out=[]; for(const x of (arr||[])) if(!s.has(x)){ s.add(x); out.push(x);} return out; }`, tests:[{ input:[[1,2,1,3]], expected:[1,2,3] }] },
+
+  { id: 'r-20', title: 'Promise pool', difficulty: 'Hard', language: 'javascript', statement: 'Given an array of async functions and a concurrency limit, run them with at most N running concurrently and return results array in order.', solution: `async function solve(fns,concurrency){ const res=new Array(fns.length); let i=0; const runner = async ()=>{ while(i<fns.length){ const idx=i++; try{ res[idx]=await fns[idx](); }catch(e){ res[idx]=e; } } }; const workers=[]; for(let k=0;k<Math.max(1,concurrency);k++) workers.push(runner()); await Promise.all(workers); return res; }`, tests:[{ input:[ [()=>Promise.resolve(1),()=>Promise.resolve(2)], 2 ], expected:[1,2] }] },
+
+  // Additional 30 questions (r-21 .. r-50)
+  { id: 'r-21', title: 'Debounce', difficulty: 'Medium', language: 'javascript', statement: 'Return a debounced version of fn (wait ms).', solution: `function solve(fn,ms=0){ let t; return function(...a){ clearTimeout(t); t=setTimeout(()=>fn.apply(this,a),ms); }; }`, tests:[{ input:[(function(){ return 1; }),100], expected: undefined }] },
+
+  { id: 'r-22', title: 'Throttle', difficulty: 'Medium', language: 'javascript', statement: 'Return a throttled version of fn that runs at most once per ms.', solution: `function solve(fn,ms=0){ let last=0; return function(...a){ const now=Date.now(); if(now-last>=ms){ last=now; fn.apply(this,a); } }; }`, tests:[{ input:[(function(){ return 1; }),100], expected: undefined }] },
+
+  { id: 'r-23', title: 'Memoize', difficulty: 'Medium', language: 'javascript', statement: 'Memoize a pure function of one or more primitive args (JSON-keyed).', solution: `function solve(fn){ const cache=new Map(); return function(...a){ const k=JSON.stringify(a); if(cache.has(k)) return cache.get(k); const v=fn.apply(this,a); cache.set(k,v); return v; }; }`, tests:[{ input:[(function(x){ return x*x; })], expected: undefined }] },
+
+  { id: 'r-24', title: 'Flatten object to dot keys', difficulty: 'Medium', language: 'javascript', statement: 'Flatten nested object keys to dot notation.', solution: `function solve(obj){ const out={}; function f(o,p){ for(const k in o){ const v=o[k]; const key=p? p+'.'+k:k; if(v&&typeof v==='object' && !Array.isArray(v)) f(v,key); else out[key]=v; } } f(obj||{}); return out; }`, tests:[{ input:[{a:{b:2},c:3}], expected:{'a.b':2,'c':3} }] },
+
+  { id: 'r-25', title: 'Group by', difficulty: 'Easy', language: 'javascript', statement: 'Group array items by key function.', solution: `function solve(arr,fn){ return (arr||[]).reduce((o,x)=>{ const k=fn? fn(x):x; (o[k]=o[k]||[]).push(x); return o; },{}); }`, tests:[{ input:[[1,2,3,4], (x)=>x%2], expected:{0:[2,4],1:[1,3]} }] },
+
+  { id: 'r-26', title: 'LRU Cache (simple)', difficulty: 'Hard', language: 'javascript', statement: 'Implement an LRU cache with get/put (capacity).', solution: `function solve(cap){ const map=new Map(); return { get(k){ if(!map.has(k)) return -1; const v=map.get(k); map.delete(k); map.set(k,v); return v; }, put(k,v){ if(map.has(k)) map.delete(k); map.set(k,v); if(map.size>cap) map.delete(map.keys().next().value); } }; }`, tests:[{ input:[2], expected: undefined }] },
+
+  { id: 'r-27', title: 'Topological sort', difficulty: 'Hard', language: 'javascript', statement: 'Return a topological ordering for DAG edges list or null if cycle.', solution: `function solve(nodes,edges){ const g=new Map(); const indeg=new Map(); for(const n of nodes){ g.set(n,[]); indeg.set(n,0); } for(const [u,v] of edges){ g.get(u).push(v); indeg.set(v,indeg.get(v)+1); } const q=[]; for(const [n,d] of indeg) if(d===0) q.push(n); const out=[]; while(q.length){ const n=q.shift(); out.push(n); for(const v of g.get(n)){ indeg.set(v,indeg.get(v)-1); if(indeg.get(v)===0) q.push(v); } } return out.length===nodes.length? out : null; }`, tests:[{ input:[['a','b','c'], [['a','b'],['b','c']]], expected:['a','b','c'] }] },
+
+  { id: 'r-28', title: 'Build tree from flat list', difficulty: 'Medium', language: 'javascript', statement: 'Given items with id and parentId, build nested tree (parentId null is root).', solution: `function solve(items){ const map=new Map(); const out=[]; for(const it of items){ map.set(it.id, Object.assign({},it,{ children:[] })); } for(const it of map.values()){ if(it.parentId==null) out.push(it); else if(map.has(it.parentId)) map.get(it.parentId).children.push(it); } return out; }`, tests:[{ input:[[ {id:1,parentId:null},{id:2,parentId:1} ]], expected:[{id:1,parentId:null,children:[{id:2,parentId:1,children:[]}] }] }] },
+
+  { id: 'r-29', title: 'Flatten tree to list', difficulty: 'Easy', language: 'javascript', statement: 'Flatten a tree (children array) to list in DFS order.', solution: `function solve(root){ const out=[]; (function f(n){ out.push({id:n.id}); for(const c of (n.children||[])) f(c); })(root); return out; }`, tests:[{ input:[{id:1,children:[{id:2}]}], expected:[{id:1},{id:2}] }] },
+
+  { id: 'r-30', title: 'Retry async', difficulty: 'Medium', language: 'javascript', statement: 'Retry an async function up to n times with delay (ms) on failure.', solution: `async function solve(fn,n=3,delay=0){ let i=0; while(true){ try{ return await fn(); }catch(e){ if(++i>=n) throw e; if(delay) await new Promise(r=>setTimeout(r,delay)); } } }`, tests:[{ input:[async ()=>1,2,10], expected:1 }] },
+
+  { id: 'r-31', title: 'Zip arrays', difficulty: 'Easy', language: 'javascript', statement: 'Zip multiple arrays into array of tuples (stop at shortest).', solution: `function solve(...arrs){ const min=Math.min(...arrs.map(a=>a.length)); const out=[]; for(let i=0;i<min;i++) out.push(arrs.map(a=>a[i])); return out; }`, tests:[{ input:[[1,2],[3,4,5]], expected:[[1,3],[2,4]] }] },
+
+  { id: 'r-32', title: 'Unzip', difficulty: 'Easy', language: 'javascript', statement: 'Reverse of zip: turn array of tuples into arrays.', solution: `function solve(tuples){ if(!tuples.length) return []; const k=tuples[0].length; const out=Array.from({length:k},()=>[]); for(const t of tuples) for(let i=0;i<k;i++) out[i].push(t[i]); return out; }`, tests:[{ input:[[[1,3],[2,4]]], expected:[[1,2],[3,4]] }] },
+
+  { id: 'r-33', title: 'Transpose matrix', difficulty: 'Easy', language: 'javascript', statement: 'Transpose a 2D matrix.', solution: `function solve(m){ if(!m.length) return []; const r=m.length,c=m[0].length; const out=Array.from({length:c},()=>Array(r)); for(let i=0;i<r;i++) for(let j=0;j<c;j++) out[j][i]=m[i][j]; return out; }`, tests:[{ input:[[[1,2,3],[4,5,6]]], expected:[[1,4],[2,5],[3,6]] }] },
+
+  { id: 'r-34', title: 'Rotate matrix 90deg', difficulty: 'Medium', language: 'javascript', statement: 'Rotate square matrix 90 degrees clockwise in new matrix.', solution: `function solve(m){ const n=m.length; const out=Array.from({length:n},()=>Array(n)); for(let i=0;i<n;i++) for(let j=0;j<n;j++) out[j][n-1-i]=m[i][j]; return out; }`, tests:[{ input:[[[1,2],[3,4]]], expected:[[3,1],[4,2]] }] },
+
+  { id: 'r-35', title: 'Valid parentheses', difficulty: 'Easy', language: 'javascript', statement: 'Return true if string parentheses are balanced ()[]{}.', solution: `function solve(s){ const m={')':'(',']':'[','}':'{'}; const st=[]; for(const c of s){ if('([{'.includes(c)) st.push(c); else if(')]}'.includes(c)){ if(st.pop()!==m[c]) return false; } } return st.length===0; }`, tests:[{ input:['()[]{}'], expected:true },{ input:['([)]'], expected:false }] },
+
+  { id: 'r-36', title: 'Longest common prefix', difficulty: 'Easy', language: 'javascript', statement: 'Return longest common prefix for array of strings.', solution: `function solve(arr){ if(!arr.length) return ''; let p=arr[0]; for(const s of arr){ let i=0; while(i<p.length && i<s.length && p[i]===s[i]) i++; p=p.slice(0,i); if(!p) break; } return p; }`, tests:[{ input:[['flower','flow','flight']], expected:'fl' }] },
+
+  { id: 'r-37', title: 'K-th largest', difficulty: 'Medium', language: 'javascript', statement: 'Return k-th largest element (k=1 => largest).', solution: `function solve(arr,k){ const a=(arr||[]).slice().sort((a,b)=>b-a); return a[k-1]; }`, tests:[{ input:[[3,2,1,5,6,4],2], expected:5 }] },
+
+  { id: 'r-38', title: 'Merge intervals', difficulty: 'Medium', language: 'javascript', statement: 'Merge overlapping intervals.', solution: `function solve(intervals){ if(!intervals.length) return []; intervals.sort((a,b)=>a[0]-b[0]); const out=[intervals[0]]; for(const it of intervals.slice(1)){ const last=out[out.length-1]; if(it[0]<=last[1]) last[1]=Math.max(last[1],it[1]); else out.push(it); } return out; }`, tests:[{ input:[[[1,3],[2,6],[8,10]]], expected:[[1,6],[8,10]] }] },
+
+  { id: 'r-39', title: 'Range sum query (immutable)', difficulty: 'Medium', language: 'javascript', statement: 'Build prefix-sum accessor: returns function(l,r) => sum arr[l..r].', solution: `function solve(arr){ const p=[0]; for(const v of arr) p.push(p[p.length-1]+v); return (l,r)=>p[r+1]-p[l]; }`, tests:[{ input:[[1,2,3,4]], expected: undefined }] },
+
+  { id: 'r-40', title: 'Binary search (leftmost)', difficulty: 'Easy', language: 'javascript', statement: 'Find leftmost index of target in sorted array or -1.', solution: `function solve(arr,target){ let l=0,r=arr.length-1,ans=-1; while(l<=r){ const m=(l+r)>>1; if(arr[m]===target){ ans=m; r=m-1; } else if(arr[m]<target) l=m+1; else r=m-1; } return ans; }`, tests:[{ input:[[1,2,2,3],2], expected:1 }] },
+
+  { id: 'r-41', title: 'Promises allSettled polyfill', difficulty: 'Medium', language: 'javascript', statement: 'Implement Promise.allSettled using native promises.', solution: `function solve(proms){ return Promise.all(proms.map(p=>Promise.resolve(p).then(v=>({status:'fulfilled',value:v}),(r)=>({status:'rejected',reason:r})))); }`, tests:[{ input:[[Promise.resolve(1),Promise.reject('e')]], expected: undefined }] },
+
+  { id: 'r-42', title: 'Flatten once', difficulty: 'Easy', language: 'javascript', statement: 'Flatten array by one level only.', solution: `function solve(arr){ return (arr||[]).reduce((o,x)=> o.concat(Array.isArray(x)?x:[x]),[]); }`, tests:[{ input:[[1,[2,3],[4]]], expected:[1,2,3,4] }] },
+
+  { id: 'r-43', title: 'Random pick weighted', difficulty: 'Medium', language: 'javascript', statement: 'Given weights array, return index picked by weights.', solution: `function solve(weights){ const s=weights.reduce((a,b)=>a+b,0); let r=Math.random()*s; for(let i=0;i<weights.length;i++){ r-=weights[i]; if(r<0) return i; } return weights.length-1; }`, tests:[{ input:[[1,2,3]], expected: Number }] },
+
+  { id: 'r-44', title: 'CamelCase to words', difficulty: 'Easy', language: 'javascript', statement: 'Convert camelCase/PascalCase to space-separated words.', solution: `function solve(s){ return (s||'').replace(/([a-z0-9])([A-Z])/g,'$1 $2').replace(/([A-Z])([A-Z][a-z])/g,'$1 $2'); }`, tests:[{ input:['helloWorld'], expected:'hello World' }] },
+
+  { id: 'r-45', title: 'Parse CSV line', difficulty: 'Medium', language: 'javascript', statement: 'Parse single CSV line with quoted fields and commas.', solution: `function solve(line){ const out=[]; let cur='', inQ=false; for(let i=0;i<line.length;i++){ const c=line[i]; if(c==='"'){ if(inQ && line[i+1]==='"'){ cur+='"'; i++; } else inQ=!inQ; } else if(c===',' && !inQ){ out.push(cur); cur=''; } else cur+=c; } out.push(cur); return out; }`, tests:[{ input:['a,"b,c",d'], expected:['a','b,c','d'] }] },
+
+  { id: 'r-46', title: 'Flatten unique CSS classes', difficulty: 'Easy', language: 'javascript', statement: 'Given various class inputs (string/array/object), return unique class list.', solution: `function solve(...args){ const s=new Set(); for(const a of args){ if(!a) continue; if(typeof a==='string') a.split(/\s+/).forEach(x=>x&&s.add(x)); else if(Array.isArray(a)) a.flat().forEach(x=>x&&s.add(String(x))); else for(const k in a) if(a[k]) s.add(k); } return Array.from(s).join(' '); }`, tests:[{ input:['btn btn-primary',['text-sm'],{active:true}], expected: String }] },
+
+  { id: 'r-47', title: 'Simple event emitter', difficulty: 'Medium', language: 'javascript', statement: 'Implement on/off/emit for an event emitter.', solution: `function solve(){ const m=new Map(); return { on(e,h){ (m.get(e)||m.set(e,[]).get(e)).push(h); return ()=>{ const a=m.get(e)||[]; const i=a.indexOf(h); if(i>=0) a.splice(i,1); }; }, emit(e,...a){ (m.get(e)||[]).slice().forEach(h=>h(...a)); } }; }`, tests:[{ input:[], expected: undefined }] },
+
+  { id: 'r-48', title: 'Deep equal', difficulty: 'Hard', language: 'javascript', statement: 'Deeply compare two values (objects/arrays/primitives).', solution: `function solve(a,b){ if(a===b) return true; if(a==null||b==null||typeof a!==typeof b) return false; if(typeof a!=='object') return a===b; if(Array.isArray(a)!==Array.isArray(b)) return false; if(Array.isArray(a)){ if(a.length!==b.length) return false; for(let i=0;i<a.length;i++) if(!solve(a[i],b[i])) return false; return true; } const ka=Object.keys(a), kb=Object.keys(b); if(ka.length!==kb.length) return false; for(const k of ka) if(!solve(a[k],b[k])) return false; return true; }`, tests:[{ input:[{a:1,b:{c:2}},{a:1,b:{c:2}}], expected:true }] },
+
+  { id: 'r-49', title: 'HTML escape', difficulty: 'Easy', language: 'javascript', statement: 'Escape <,>,&," to HTML entities.', solution: `function solve(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }`, tests:[{ input:['<div>'], expected:'&lt;div&gt;' }] },
+
+  { id: 'r-50', title: 'Virtual DOM diff (simple)', difficulty: 'Hard', language: 'javascript', statement: 'Given two simple VNode trees (type, props, children strings/arrays) return list of patches (added/removed/replace) - simple structural diff.', solution: `function solve(a,b){ const patches=[]; function eq(x,y){ if(!x && !y) return true; if(!x||!y) return false; if(x.type!==y.type) return false; if(JSON.stringify(x.props||{})!==JSON.stringify(y.props||{})) return false; return (x.children||[]).length===(y.children||[]).length && (x.children||[]).every((c,i)=>eq(c,y.children[i])); } if(!eq(a,b)) patches.push({from:a,to:b}); return patches; }`, tests:[{ input:[{type:'div',props:{},children:[]},{type:'div',props:{class:'a'},children:[]}], expected: Array }] }
+];
 
 export default reactQuestions;

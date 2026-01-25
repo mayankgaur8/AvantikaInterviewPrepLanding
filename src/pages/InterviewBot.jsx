@@ -257,7 +257,6 @@ export default function InterviewBot() {
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 {isPro && <Button onClick={() => nav('/pro/resume')} variant="default" size="sm">Resume</Button>}
                 <Button onClick={() => nav('/mcq')} variant="default" size="sm">MCQs</Button>
-                <Button onClick={() => nav('/')} variant="outline" size="sm">Home</Button>
                 {isPro && <Button onClick={() => nav('/pro/coding-exercise')} variant="default" size="sm">Coding Exercise</Button>}
               </div>
             </div>

@@ -396,12 +396,13 @@ const pageStyles = {
 
   card: {
     background: "#fff",
+    color: '#0f172a', // ensure dark text on white card (overrides global text-white)
     borderRadius: 18,
     boxShadow: "0 12px 30px rgba(0,0,0,0.06)",
     padding: 18,
     border: "1px solid rgba(0,0,0,0.06)",
   },
-  qTitle: { fontSize: 18, fontWeight: 800, marginBottom: 12, letterSpacing: -0.2 },
+  qTitle: { fontSize: 18, fontWeight: 800, marginBottom: 12, letterSpacing: -0.2, color: '#0f172a' },
   opts: { display: "grid", gap: 10 },
   opt: {
     textAlign: "left",
@@ -409,6 +410,7 @@ const pageStyles = {
     borderRadius: 14,
     border: "1px solid rgba(0,0,0,0.10)",
     background: "#fff",
+    color: '#0f172a', // explicit dark text for options
     cursor: "pointer",
     display: "flex",
     gap: 8,
@@ -425,6 +427,7 @@ const pageStyles = {
     borderRadius: 14,
     background: "#f8fafc",
     border: "1px solid rgba(0,0,0,0.06)",
+    color: '#0f172a'
   },
 
   btn: {
@@ -432,6 +435,7 @@ const pageStyles = {
     borderRadius: 12,
     border: "1px solid rgba(0,0,0,0.12)",
     background: "#fff",
+    color: '#0f172a',
     cursor: "pointer",
     fontWeight: 600,
   },
