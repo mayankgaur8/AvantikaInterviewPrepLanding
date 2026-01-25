@@ -543,15 +543,15 @@ export default function Home() {
 
           {/* RIGHT */}
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <Card className="bg-white/10 text-white border border-white/15 backdrop-blur rounded-3xl overflow-hidden">
+            <Card className="bg-white text-neutral-900 border border-neutral-200 rounded-3xl shadow-lg overflow-hidden">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between gap-2">
-                  <Badge className="bg-white/10 text-white border border-white/15 rounded-full">Live Preview</Badge>
+                  <Badge className="bg-neutral-100 text-neutral-800 border border-neutral-200 rounded-full">Live Preview</Badge>
 
                   <div className="flex items-center gap-2">
-                    <Badge className="bg-white/10 text-white border border-white/15 rounded-full">Senior Track</Badge>
+                    <Badge className="bg-purple-600 text-white border border-purple-600 rounded-full">Senior Track</Badge>
                     <Select value={role} onValueChange={setRole}>
-                      <SelectTrigger className="w-[140px] bg-white/10 text-white border-white/15">
+                      <SelectTrigger className="w-[140px] bg-purple-600 text-white border border-purple-600 hover:bg-purple-700 rounded-lg">
                         <SelectValue placeholder="Senior" />
                       </SelectTrigger>
                       <SelectContent>
@@ -568,24 +568,24 @@ export default function Home() {
 
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="rounded-2xl bg-white/10 border border-white/15 p-4">
-                    <div className="text-xs text-white/70">Accuracy</div>
+                  <div className="rounded-2xl bg-neutral-50 border border-neutral-200 p-4">
+                    <div className="text-xs text-neutral-500">Accuracy</div>
                     <div className="mt-2 text-2xl font-bold">{accuracy}%</div>
                   </div>
-                  <div className="rounded-2xl bg-white/10 border border-white/15 p-4">
-                    <div className="text-xs text-white/70">Attempts</div>
+                  <div className="rounded-2xl bg-neutral-50 border border-neutral-200 p-4">
+                    <div className="text-xs text-neutral-500">Attempts</div>
                     <div className="mt-2 text-2xl font-bold">{score.total}</div>
                   </div>
-                  <div className="rounded-2xl bg-white/10 border border-white/15 p-4">
-                    <div className="text-xs text-white/70">Streak</div>
+                  <div className="rounded-2xl bg-neutral-50 border border-neutral-200 p-4">
+                    <div className="text-xs text-neutral-500">Streak</div>
                     <div className="mt-2 text-2xl font-bold">3 days</div>
                   </div>
                 </div>
 
-                <div className="rounded-2xl bg-white/10 border border-white/15 p-4">
+                <div className="rounded-2xl bg-neutral-50 border border-neutral-200 p-4">
                   <div className="flex items-center justify-between">
-                    <div className="text-sm font-semibold">Weekly practice plan</div>
-                    <Badge className="bg-white/10 text-white border border-white/15 rounded-full">Auto-generated</Badge>
+                    <div className="text-sm font-semibold text-neutral-800">Weekly practice plan</div>
+                    <Badge className="bg-white text-neutral-800 border border-neutral-200 rounded-full">Auto-generated</Badge>
                   </div>
 
                   <div className="mt-3 h-48 w-full">
@@ -595,7 +595,7 @@ export default function Home() {
                         <XAxis dataKey="week" />
                         <YAxis />
                         <Tooltip />
-                        <Line type="monotone" dataKey="hours" strokeWidth={3} dot={false} />
+                        <Line type="monotone" dataKey="hours" strokeWidth={3} dot={false} stroke="#4f46e5" />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
@@ -754,7 +754,7 @@ export default function Home() {
             <CardContent>
               <div className="grid gap-3">
                 <Select value={role} onValueChange={setRole}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full bg-purple-600 text-white rounded-lg hover:bg-purple-700">
                     <SelectValue placeholder="Select role track" />
                   </SelectTrigger>
                   <SelectContent>
