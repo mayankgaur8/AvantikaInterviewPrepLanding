@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AvantikaLogo from '../assets/Avantika_Interviews.png';
 import { Button } from '../components/ui/button';
+import ChatWidget from './ChatWidget';
 
 export default function SiteFrame({ children }) {
   const navigate = useNavigate();
@@ -86,6 +87,8 @@ export default function SiteFrame({ children }) {
           </div>
         </div>
       </footer>
+
+      <ChatWidget />
     </div>
   );
 }
