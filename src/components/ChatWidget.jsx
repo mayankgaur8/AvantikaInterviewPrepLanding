@@ -22,6 +22,10 @@ export default function ChatWidget() {
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const bottomRef = useRef(null);
+  // conversation collection state: 'idle' | 'collecting'
+  const [collecting, setCollecting] = useState(false);
+  const [collectStage, setCollectStage] = useState(null); // 'name'|'email'|'phone'|null
+  const [collected, setCollected] = useState({ name: null, email: null, phone: null });
 
   const sessionId = useMemo(() => {
     if (typeof window === "undefined") return "web-session";
@@ -32,27 +36,93 @@ export default function ChatWidget() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, sending]);
 
+  const startCollection = () => {
+    setCollecting(true);
+    setCollectStage('name');
+    setMessages((prev) => [...prev, { role: 'bot', text: 'Great — may I have your full name?' }]);
+  };
+
+  const finishCollectionAndShowPlans = () => {
+    const plansText = `Thanks ${collected.name || ''}! Here are our plans:\n\n` +
+      `Pro — ₹999/mo: Full Q&A, Interview Bot, Role tracks, Progress analytics.\n` +
+      `Career+ — ₹4,999: Everything in Pro plus resume templates, system design drills, and monthly review.\n\n` +
+      `We will follow up at ${collected.email || 'your email'} or ${collected.phone || 'your phone number'}.`;
+
+    setMessages((prev) => [...prev, { role: 'bot', text: plansText }]);
+    // reset collecting state
+    setCollecting(false);
+    setCollectStage(null);
+    setCollected({ name: null, email: null, phone: null });
+  };
+
   const sendMessage = async () => {
     const trimmed = input.trim();
     if (!trimmed || sending) return;
 
-    setMessages((prev) => [...prev, { role: "user", text: trimmed }]);
-    setInput("");
-    setSending(true);
+    // when in collection mode, treat user input as answers to prompts
+    if (collecting) {
+      setMessages((prev) => [...prev, { role: 'user', text: trimmed }]);
+      setInput('');
 
+      if (collectStage === 'name') {
+        setCollected((c) => ({ ...c, name: trimmed }));
+        setCollectStage('email');
+        setMessages((prev) => [...prev, { role: 'bot', text: 'Thanks — please provide your email address.' }]);
+        return;
+      }
+
+      if (collectStage === 'email') {
+        // basic email validation
+        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRe.test(trimmed)) {
+          setMessages((prev) => [...prev, { role: 'bot', text: 'That doesn’t look like a valid email. Please enter a valid email address.' }]);
+          return;
+        }
+        setCollected((c) => ({ ...c, email: trimmed }));
+        setCollectStage('phone');
+        setMessages((prev) => [...prev, { role: 'bot', text: 'Got it. Finally, please give a phone number we can reach you on (optional).' }]);
+        return;
+      }
+
+      if (collectStage === 'phone') {
+        // basic phone cleanup
+        const phone = trimmed.replace(/[^0-9+]/g, '');
+        setCollected((c) => ({ ...c, phone }));
+        setInput('');
+        // show plans
+        finishCollectionAndShowPlans();
+        return;
+      }
+      return;
+    }
+
+    // not collecting: check if user asked for plans/pricing -> start collection
+    const lc = trimmed.toLowerCase();
+    const asksForPlans = /plan|pricing|pro|career|price/.test(lc);
+
+    setMessages((prev) => [...prev, { role: 'user', text: trimmed }]);
+    setInput('');
+
+    if (asksForPlans) {
+      startCollection();
+      return;
+    }
+
+    // otherwise call backend Dialogflow
+    setSending(true);
     try {
-      const res = await fetch("/api/dialogflow/message", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/dialogflow/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: trimmed, sessionId }),
       });
       const data = await res.json();
       const replyText = data?.reply || "I’m not sure yet, but I can connect you with the team.";
-      setMessages((prev) => [...prev, { role: "bot", text: replyText }]);
+      setMessages((prev) => [...prev, { role: 'bot', text: replyText }]);
     } catch (error) {
       setMessages((prev) => [
         ...prev,
-        { role: "bot", text: "Sorry, I couldn’t reach the server. Please try again in a moment." },
+        { role: 'bot', text: 'Sorry, I couldn’t reach the server. Please try again in a moment.' },
       ]);
     } finally {
       setSending(false);
@@ -60,7 +130,7 @@ export default function ChatWidget() {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       event.preventDefault();
       sendMessage();
     }
